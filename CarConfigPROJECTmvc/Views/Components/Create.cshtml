@@ -1,0 +1,64 @@
+﻿@model CarConfigPROJECTmvc.ViewModels.ComponentVM
+
+@{
+    ViewData["Title"] = "Create Component";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+    <link rel="stylesheet" href="~/css/components/components.css" />
+}
+
+<div class="page components-page">
+
+    <div class="topbar">
+        <h1 class="page-title">Create Component</h1>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+    </div>
+
+    <div class="card-surface" style="padding:20px;">
+        <form asp-action="Create" class="components-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description" class="control-label"></label>
+                <input asp-for="Description" class="form-control" />
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Price" class="control-label"></label>
+                <input asp-for="Price" class="form-control" />
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="ComponentTypeName" class="control-label"></label>
+                <select asp-for="ComponentTypeName"
+                        asp-items="Model.ComponentTypeList"
+                        class="form-control">
+                    <option value="">-- Select Component Type --</option>
+                </select>
+                <span asp-validation-for="ComponentTypeName" class="text-danger"></span>
+            </div>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,82 @@
+﻿/* ===== THEME / DESIGN SYSTEM (global) ===== */
+:root {
+    --bg: #f4f6f8;
+    --surface: #ffffff;
+    --text: #1f2937;
+    --text-strong: #111827;
+    --muted: #6b7280;
+    --border: #e5e7eb;
+    --primary-600: #2563eb;
+    --primary-500: #3b82f6;
+    --danger-600: #dc3545;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+    --shadow-sm: 0 8px 18px rgba(0,0,0,0.08);
+    --shadow-md: 0 10px 30px rgba(0,0,0,0.08);
+    --shadow-lg: 0 18px 40px rgba(0,0,0,0.12);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--bg);
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: var(--text);
+}
+
+/* Generic page container */
+.page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px;
+}
+
+/* Headings */
+h1, h2, h3 {
+    color: var(--text-strong);
+    letter-spacing: -0.02em;
+}
+
+/* Card surface */
+.card-surface {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+    border: 1px solid rgba(229,231,235,0.7);
+}
+
+/* ===== Buttons (Bootstrap-compatible) ===== */
+.btn {
+    border-radius: var(--radius-md);
+    font-weight: 800;
+    transition: transform .2s ease, box-shadow .2s ease, background-color .2s ease, border-color .2s ease;
+}
+
+    .btn:focus {
+        box-shadow: 0 0 0 4px rgba(59,130,246,0.22);
+    }
+
+.btn-primary {
+    background: linear-gradient(135deg, var(--primary-600), var(--primary-500));
+    border: 0;
+    box-shadow: 0 10px 24px rgba(37,99,235,0.25);
+}
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(37,99,235,0.35);
+    }
+
+.btn-outline-primary {
+    background: #fff;
+    border: 1px solid var(--border);
+    color: var(--primary-600);
+    box-shadow: var(--shadow-sm);
+}
+
+    .btn-outline-primary:hover {
+        transform: translateY(-2px);
+        border-color: rgba(37,99,235,0.35);
+        box-shadow:

@@ -1,0 +1,63 @@
+﻿@model CarConfigPROJECTmvc.ViewModels.CarConfigurationDetailsVm
+@{
+    ViewData["Title"] = "Configuration Details";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/carConfigurator/CarConfiguratorDetails.css" />
+}
+
+<div class="cd-shell">
+    <div class="cd-page">
+        <div class="cd-card">
+
+            <div class="cd-header">
+                <div>
+                    <h2 class="cd-title">@Model.Name</h2>
+                    <p class="cd-meta">Created: @Model.CreatedAt</p>
+                </div>
+            </div>
+
+            <div class="cd-content">
+                @if (!Model.Components.Any())
+                {
+                    <p class="cd-empty">No components in this configuration.</p>
+                }
+                else
+                {
+                    <table class="cd-table">
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Component</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var c in Model.Components)
+                            {
+                                <tr>
+                                    <td>@c.TypeName</td>
+                                    <td>@c.ComponentName</td>
+                                    <td>@c.Price €</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+
+                    <div class="cd-total">
+                        <span><b>Total</b></span>
+                        <strong>@Model.TotalPrice €</strong>
+                    </div>
+                }
+
+                <div class="cd-actions">
+                    <a asp-action="Index" class="cd-btn cd-btn-secondary">
+                        ← Back to list
+                    </a>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>

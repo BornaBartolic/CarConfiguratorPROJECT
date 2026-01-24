@@ -1,0 +1,51 @@
+﻿@using CarConfigPROJECTmvc.ViewModels
+@model ComponentCompatibilityVM
+
+@{
+    ViewData["Title"] = "Edit Component Compatibility";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+    <link rel="stylesheet" href="~/css/components/components.css" />
+}
+
+<div class="page components-page">
+
+    <div class="topbar">
+        <h1 class="page-title">Edit Compatibility</h1>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+    </div>
+
+    <div class="card-surface" style="padding:20px;">
+        <form asp-action="Edit" method="post" class="components-form">
+            <input type="hidden" asp-for="Id" />
+
+            <div class="form-group">
+                <label asp-for="CarComponentId1" class="control-label"></label>
+                <select asp-for="CarComponentId1" class="form-control" asp-items="Model.Components">
+                    <option value="">-- Select Component 1 --</option>
+                </select>
+                <span asp-validation-for="CarComponentId1" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-top:10px;">
+                <label asp-for="CarComponentId2" class="control-label"></label>
+                <select asp-for="CarComponentId2" class="form-control" asp-items="Model.Components">
+                    <option value="">-- Select Component 2 --</option>
+                </select>
+                <span asp-validation-for="CarComponentId2" class="text-danger"></span>
+            </div>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">Save</button>
+                <a asp-action="Index" class="btn btn-outline-primary">Cancel</a>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

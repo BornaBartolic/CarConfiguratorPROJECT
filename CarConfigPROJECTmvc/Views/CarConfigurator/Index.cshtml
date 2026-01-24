@@ -1,0 +1,93 @@
+﻿@model List<CarConfigPROJECTmvc.ViewModels.CarConfigurationListItemVm>
+
+@{
+    ViewData["Title"] = "Car Configurator";
+}
+
+<div class="configurator-page">
+
+    <div class="configurator-header">
+        <h2>Car Configurator</h2>
+
+        <a asp-action="Create" class="btn-primary">
+            Create New Configuration
+        </a>
+    </div>
+
+    @if (!Model.Any())
+    {
+        <p>No configurations created yet.</p>
+    }
+    else
+    {
+        <div class="config-grid">
+            @foreach (var c in Model)
+            {
+                <div class="config-card">
+                    <div>
+                        <h3>@c.Name</h3>
+
+                        <div class="config-meta">
+                            Created: @c.CreatedAt.ToString("dd.MM.yyyy")
+                        </div>
+
+                        <div class="config-price">
+                            Total: @c.TotalPrice €
+                        </div>
+                    </div>
+
+                    <a asp-action="Details"
+                       asp-route-id="@c.Id"
+                       class="details-link">
+                        View Details →
+                    </a>
+                </div>
+            }
+        </div>
+    }
+
+    <!-- PAGINATION – UVIJEK SE PRIKAZUJE -->
+    <nav aria-label="Page navigation" style="margin-top:20px;">
+        <ul class="pagination justify-content-center">
+
+            <!-- Previous -->
+            <li class="page-item @((int)ViewBag.Page <= 1 ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@((int)ViewBag.Page - 1)">
+                    Previous
+                </a>
+            </li>
+
+            @{
+                int current = (int)ViewBag.Page;
+                int total = (int)ViewBag.TotalPages;
+
+                int startPage = Math.Max(1, current - 5);
+                int endPage = Math.Min(total, current + 5);
+            }
+
+            @for (int i = startPage; i <= endPage; i++)
+            {
+                <li class="page-item @(i == (int)ViewBag.Page ? "active" : "")">
+                    <a class="page-link"
+                       asp-action="Index"
+                       asp-route-page="@i">
+                        @i
+                    </a>
+                </li>
+            }
+
+            <!-- Next -->
+            <li class="page-item @((int)ViewBag.Page >= (int)ViewBag.TotalPages ? "disabled" : "")">
+                <a class="page-link"
+                   asp-action="Index"
+                   asp-route-page="@((int)ViewBag.Page + 1)">
+                    Next
+                </a>
+            </li>
+
+        </ul>
+    </nav>
+
+</div>

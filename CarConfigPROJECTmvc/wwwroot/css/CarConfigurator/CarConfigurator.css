@@ -1,0 +1,119 @@
+﻿/* RESET / BASE */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    background-color: #f4f6f8;
+    font-family: "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+    color: #1f2937;
+}
+
+/* PAGE WRAPPER */
+.configurator-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 20px;
+}
+
+/* HEADER */
+.configurator-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 32px;
+}
+
+    .configurator-header h2 {
+        font-size: 2rem;
+        font-weight: 700;
+        margin: 0;
+    }
+
+/* PRIMARY BUTTON */
+.btn-primary {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 12px;
+    text-decoration: none;
+    font-weight: 700;
+    box-shadow: 0 10px 24px rgba(37, 99, 235, 0.25);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 14px 30px rgba(37, 99, 235, 0.35);
+    }
+
+/* GRID */
+.config-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 24px;
+}
+
+/* CARD */
+.config-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+    .config-card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+    }
+
+    /* CARD CONTENT */
+    .config-card h3 {
+        font-size: 1.2rem;
+        margin: 0 0 8px 0;
+        font-weight: 800;
+    }
+
+.config-meta {
+    font-size: 0.9rem;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.config-price {
+    font-size: 1.25rem;
+    font-weight: 900;
+    color: #111827;
+}
+
+/* DETAILS LINK (fix za "prazni bijeli blok") */
+.details-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 14px;
+    padding: 10px 14px;
+    border-radius: 12px;
+    background: #ffffff;
+    color: #2563eb !important; /* da bootstrap ne pregazi */
+    font-weight: 800;
+    text-decoration: none !important;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 8px 18px rgba(0,0,0,0.08);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+    .details-link:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+    }
+
+/* EMPTY STATE */
+.configurator-page p {
+    font-size: 1rem;
+    color: #6b7280;
+}

@@ -1,0 +1,65 @@
+﻿@model CarConfigPROJECTmvc.ViewModels.ComponentTypeDetailsVm
+
+@{
+    ViewData["Title"] = "Component Type Details";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+    <link rel="stylesheet" href="~/css/components/components.css" />
+}
+
+<div class="page components-page">
+
+    <div class="topbar">
+        <div>
+            <h1 class="page-title">@Model.Name</h1>
+            <div style="color: var(--muted); font-weight:700;">
+                Type Id: @Model.Id · Components: @Model.Components.Count
+            </div>
+        </div>
+
+        <a asp-action="Index" class="btn btn-outline-primary">Back</a>
+    </div>
+
+    <div class="card-surface" style="padding:20px;">
+        @if (!Model.Components.Any())
+        {
+            <p style="margin:0; color: var(--muted); font-weight:700;">No components found for this type.</p>
+        }
+        else
+        {
+            <div class="table-surface" style="padding:0; border:0; box-shadow:none;">
+                <table class="table table-bordered table-striped">
+                    <thead>
+                        <tr>
+                            <th>Component</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var c in Model.Components)
+                        {
+                            <tr>
+                                <td>
+                                    <div style="font-weight:900; color: var(--text-strong);">@c.Name</div>
+                                    @if (!string.IsNullOrWhiteSpace(c.Description))
+                                    {
+                                        <div style="color: var(--muted); margin-top:4px;">@c.Description</div>
+                                    }
+                                </td>
+                                <td style="font-weight:900;">@c.Price €</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top:14px; display:flex; justify-content:space-between; gap:12px; flex-wrap:wrap;">
+                <span style="font-weight:800;">Total of listed components</span>
+                <strong style="font-size:1.1rem;">@Model.TotalPrice €</strong>
+            </div>
+        }
+    </div>
+
+</div>

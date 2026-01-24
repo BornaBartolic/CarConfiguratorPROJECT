@@ -1,0 +1,36 @@
+﻿@{
+    ViewData["Title"] = "Car Configurator";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+}
+
+<div class="page" style="min-height:80vh; display:flex; align-items:center;">
+
+    <div style="max-width:640px;">
+        <h1 style="font-size:3rem; font-weight:900; line-height:1.1;">
+            Build Your Perfect Car
+        </h1>
+
+        <p style="margin-top:16px; font-size:1.1rem; color:#6b7280;">
+            Configure your dream vehicle step by step.
+            Choose car type, engine, interior, and accessories — all in one place.
+        </p>
+
+        <div style="margin-top:28px; display:flex; gap:14px; flex-wrap:wrap;">
+            <a asp-controller="User"
+               asp-action="Login"
+               class="btn btn-primary">
+                Get Started
+            </a>
+
+            <a asp-controller="User"
+               asp-action="Register"
+               class="btn btn-outline-primary">
+                Create Account
+            </a>
+        </div>
+    </div>
+
+</div>

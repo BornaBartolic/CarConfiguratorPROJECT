@@ -1,0 +1,59 @@
+﻿@model CarConfigPROJECTmvc.ViewModels.ComponentDeleteVM
+
+@{
+    ViewData["Title"] = "Delete Component";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+    <link rel="stylesheet" href="~/css/components/components.css" />
+}
+
+<div class="page components-page">
+
+    <div class="topbar">
+        <h1 class="page-title">Delete Component</h1>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+    </div>
+
+    <div class="card-surface" style="padding:20px;">
+        <p style="margin:0 0 12px 0; color: var(--muted); font-weight:700;">
+            Are you sure you want to delete this component?
+        </p>
+
+        <dl class="row" style="margin:0;">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Component.Name)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Component.Name)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Component.Description)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Component.Description)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Component.Price)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Component.Price)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Component.ComponentTypeId)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Component.ComponentType.Name)</dd>
+        </dl>
+
+        @if (Model.Compatibilities.Any())
+        {
+            <div style="margin-top:16px;">
+                <h4 style="margin:0 0 8px 0; font-weight:900;">Compatible with</h4>
+                <ul style="margin:0; color: var(--muted);">
+                    @foreach (var c in Model.Compatibilities)
+                    {
+                        var other = c.CarComponentId1 == Model.Component.Id ? c.CarComponent2 : c.CarComponent1;
+                        <li>@other.Name (@other.ComponentType.Name)</li>
+                    }
+                </ul>
+            </div>
+        }
+
+        <form asp-action="Delete" method="post" style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="hidden" asp-for="Component.Id" />
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+        </form>
+    </div>
+
+</div>

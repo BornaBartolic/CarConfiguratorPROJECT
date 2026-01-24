@@ -1,0 +1,166 @@
+﻿@using CarConfigPROJECTmvc.ViewModels
+@model ComponentTypeOrderVm
+@{
+    ViewData["Title"] = "Configurator Step Order";
+
+    bool IsCarType(ComponentTypeOrderItemVm item)
+        => item.Name == "Car Type" || item.Name == "Tip auta" || item.Name == "Vrsta auta" || item.Name == "CarType";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/configurator-options.css" />
+    <style>
+        .opt-item.locked {
+            opacity: 0.85;
+            background: rgba(0,0,0,0.03);
+            border-left: 4px solid #dc3545; /* bootstrap danger red */
+        }
+
+        .opt-lock {
+            font-size: 12px;
+            margin-left: 8px;
+            color: #dc3545;
+            font-weight: 600;
+        }
+
+        .opt-handle.hidden {
+            visibility: hidden;
+        }
+    </style>
+}
+
+<div class="opt-page">
+    <div class="opt-header">
+        <div>
+            <h2 class="opt-title">Configurator Step Order</h2>
+            <p class="opt-subtitle">Drag & drop or use arrows. Click Save to persist the new order. Car Type is fixed as the first step.</p>
+        </div>
+
+        <div class="opt-actions-top">
+            <form asp-action="ResetOrder" method="post">
+                @Html.AntiForgeryToken()
+                <button type="submit" class="opt-btn opt-btn-secondary">Reset to Default</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="opt-card">
+
+        <form asp-action="SaveOrder" method="post" id="saveOrderForm">
+            @Html.AntiForgeryToken()
+
+            <ul class="opt-list" id="typeList">
+                @for (int i = 0; i < Model.Items.Count; i++)
+                {
+                    var item = Model.Items[i];
+                    var locked = IsCarType(item);
+
+                    <li class="opt-item @(locked ? "locked" : "")"
+                        draggable="@(locked ? "false" : "true")"
+                        data-id="@item.Id"
+                        data-locked="@(locked ? "1" : "0")">
+
+                        <div class="opt-left">
+                            <div class="opt-handle @(locked ? "hidden" : "")" title="Drag">≡</div>
+                            <div class="opt-name">
+                                @item.Name <span class="opt-id">#@item.Id</span>
+                                @if (locked)
+                                {
+                                    <span class="opt-lock">LOCKED (always first)</span>
+                                }
+                            </div>
+                        </div>
+                   
+                    </li>
+                }
+            </ul>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" class="opt-btn opt-btn-primary">Save Order</button>
+                <a asp-action="Index" class="opt-btn opt-btn-secondary">Cancel</a>
+            </div>
+        </form>
+
+        <div class="opt-note">
+            Tip: After dragging, click <b>Save Order</b> to persist the new order. Arrows save immediately. <b>Car Type is fixed.</b>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        (function () {
+            const list = document.getElementById("typeList");
+            const form = document.getElementById("saveOrderForm");
+            if (!list || !form) return;
+
+            let dragged = null;
+
+            function isItem(el) {
+                return el && el.classList && el.classList.contains("opt-item");
+            }
+            function isLocked(li) {
+                return li && li.getAttribute("data-locked") === "1";
+            }
+
+            list.addEventListener("dragstart", (e) => {
+                const li = e.target.closest(".opt-item");
+                if (!isItem(li) || isLocked(li)) {
+                    e.preventDefault();
+                    return;
+                }
+                dragged = li;
+                li.style.opacity = "0.6";
+                e.dataTransfer.effectAllowed = "move";
+            });
+
+            list.addEventListener("dragend", () => {
+                if (dragged) dragged.style.opacity = "";
+                dragged = null;
+                list.querySelectorAll(".opt-item").forEach(x => x.classList.remove("drag-over"));
+            });
+
+            list.addEventListener("dragover", (e) => {
+                e.preventDefault();
+                const over = e.target.closest(".opt-item");
+                if (!isItem(over) || !dragged || over === dragged) return;
+
+                // never drop before/into locked item
+                if (isLocked(over)) return;
+
+                list.querySelectorAll(".opt-item").forEach(x => x.classList.remove("drag-over"));
+                over.classList.add("drag-over");
+
+                const rect = over.getBoundingClientRect();
+                const after = (e.clientY - rect.top) > (rect.height / 2);
+
+                if (after) over.after(dragged);
+                else over.before(dragged);
+            });
+
+            // Rebuild orderedIds ONLY when clicking "Save Order"
+            const saveBtn = form.querySelector('button.opt-btn-primary');
+            if (saveBtn) {
+                saveBtn.addEventListener("click", () => {
+                    // remove old orderedIds
+                    list.querySelectorAll('input[name="orderedIds"]').forEach(x => x.remove());
+
+                    // ensure locked item is first in DOM
+                    const locked = list.querySelector('.opt-item[data-locked="1"]');
+                    if (locked) list.prepend(locked);
+
+                    // add orderedIds in current DOM order
+                    list.querySelectorAll(".opt-item").forEach(li => {
+                        const id = li.getAttribute("data-id");
+                        const input = document.createElement("input");
+                        input.type = "hidden";
+                        input.name = "orderedIds";
+                        input.value = id;
+                        form.appendChild(input);
+                    });
+                });
+            }
+        })();
+    </script>
+}
+

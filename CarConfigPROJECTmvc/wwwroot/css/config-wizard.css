@@ -1,0 +1,189 @@
+﻿/*ovo je za step i summary css*/
+
+/* Wizard-only styling */
+.wz-page {
+    max-width: 960px;
+    margin: 0 auto;
+    padding: 28px 18px 40px;
+}
+
+.wz-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.wz-title {
+    margin: 0;
+    font-size: 1.9rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
+}
+
+.wz-subtitle {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+.wz-card {
+    background: #ffffff;
+    border-radius: 18px;
+    padding: 18px;
+    box-shadow: 0 14px 40px rgba(0,0,0,0.10);
+    border: 1px solid #eef0f3;
+}
+
+.wz-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 18px;
+    align-items: start;
+}
+
+@media (max-width: 900px) {
+    .wz-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.wz-section-title {
+    margin: 0 0 10px 0;
+    font-size: 1.05rem;
+    font-weight: 800;
+}
+
+.wz-choices {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 8px;
+}
+
+    .wz-choices li {
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid #eef0f3;
+        background: #fafbfc;
+    }
+
+    .wz-choices b {
+        font-weight: 800;
+    }
+
+.wz-form-row {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.wz-label {
+    font-weight: 700;
+}
+
+.wz-select, .wz-input {
+    width: 100%;
+    padding: 12px 12px;
+    border-radius: 12px;
+    border: 1px solid #dfe3ea;
+    background: #fff;
+    outline: none;
+    font-size: 1rem;
+}
+
+    .wz-select:focus, .wz-input:focus {
+        border-color: #2563eb;
+        box-shadow: 0 0 0 4px rgba(37,99,235,0.15);
+    }
+
+.wz-error {
+    color: #b91c1c;
+    font-weight: 600;
+}
+
+.wz-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 14px;
+    flex-wrap: wrap;
+}
+
+.wz-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 11px 16px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    text-decoration: none;
+    font-weight: 800;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+    .wz-btn:active {
+        transform: translateY(1px);
+    }
+
+.wz-btn-primary {
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #fff;
+    box-shadow: 0 10px 22px rgba(37,99,235,0.25);
+}
+
+    .wz-btn-primary:hover {
+        box-shadow: 0 14px 30px rgba(37,99,235,0.35);
+    }
+
+.wz-btn-secondary {
+    background: #ffffff;
+    color: #2563eb;
+    border-color: #dfe3ea;
+}
+
+    .wz-btn-secondary:hover {
+        box-shadow: 0 10px 22px rgba(0,0,0,0.10);
+    }
+
+.wz-total {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: #f7faff;
+    border: 1px solid rgba(37,99,235,0.18);
+    margin-top: 14px;
+}
+
+    .wz-total strong {
+        font-size: 1.2rem;
+    }
+
+.wz-table {
+    width: 100%;
+    border-collapse: collapse;
+    overflow: hidden;
+    border-radius: 14px;
+    border: 1px solid #eef0f3;
+}
+
+    .wz-table th, .wz-table td {
+        padding: 12px 12px;
+        border-bottom: 1px solid #eef0f3;
+        text-align: left;
+    }
+
+    .wz-table th {
+        background: #fafbfc;
+        font-weight: 800;
+        color: #374151;
+    }
+
+        .wz-table td:last-child, .wz-table th:last-child {
+            text-align: right;
+        }
+

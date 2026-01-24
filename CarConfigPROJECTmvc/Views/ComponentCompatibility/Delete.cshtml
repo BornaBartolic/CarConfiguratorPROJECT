@@ -1,0 +1,39 @@
+﻿@model CarConfigDATA.Models.CarComponentCompatibility
+
+@{
+    ViewData["Title"] = "Delete Compatibility";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+    <link rel="stylesheet" href="~/css/components/components.css" />
+}
+
+<div class="page components-page">
+
+    <div class="topbar">
+        <h1 class="page-title">Delete Compatibility</h1>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+    </div>
+
+    <div class="card-surface" style="padding:20px;">
+        <p style="margin:0 0 12px 0; color: var(--muted); font-weight:700;">
+            Are you sure you want to delete this compatibility?
+        </p>
+
+        <dl class="row" style="margin:0;">
+            <dt class="col-sm-3">Component 1</dt>
+            <dd class="col-sm-9">@Model.CarComponent1.Name</dd>
+
+            <dt class="col-sm-3">Component 2</dt>
+            <dd class="col-sm-9">@Model.CarComponent2.Name</dd>
+        </dl>
+
+        <form asp-action="DeleteConfirmed" method="post" style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-outline-primary">Cancel</a>
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,189 @@
+﻿@model CarConfigPROJECTmvc.ViewModels.ConfigStepVm
+@{
+    ViewData["Title"] = "Configurator";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/config-wizard.css" />
+    <style>
+        .wz-option {
+            border: 1px solid rgba(0,0,0,0.12);
+            border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+
+            .wz-option:hover {
+                border-color: rgba(0,0,0,0.25);
+            }
+
+            .wz-option input[type="radio"] {
+                margin-top: 4px;
+                transform: scale(1.05);
+            }
+
+        .wz-option-title {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            align-items: baseline;
+        }
+
+        .wz-option-name {
+            font-weight: 700;
+        }
+
+        .wz-option-price {
+            opacity: 0.85;
+            font-weight: 600;
+        }
+
+        .wz-option-desc {
+            margin-top: 6px;
+            opacity: 0.75;
+            font-size: 0.92rem;
+            line-height: 1.25rem;
+        }
+
+        .wz-option label {
+            cursor: pointer;
+            width: 100%;
+        }
+
+        /* Optional: nicer warning box */
+        .wz-warning {
+            border: 1px solid rgba(220, 53, 69, 0.35);
+            background: rgba(220, 53, 69, 0.08);
+            color: #b02a37;
+            border-radius: 10px;
+            padding: 10px 12px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+    </style>
+}
+
+<div class="wz-page">
+    <div class="wz-header">
+        <div>
+            <h2 class="wz-title">Car Configurator</h2>
+            <p class="wz-subtitle">Step @(Model.StepIndex + 1): @Model.ComponentTypeName</p>
+        </div>
+    </div>
+
+    <div class="wz-grid">
+        <div class="wz-card">
+            <h3 class="wz-section-title">Choose @Model.ComponentTypeName</h3>
+
+            <form asp-action="Step" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" asp-for="StepIndex" />
+                <input type="hidden" asp-for="ComponentTypeId" />
+
+                <!-- ✅ Message when user tried to Review/Save before finishing -->
+                @if (TempData["Error"] != null)
+                {
+                    <div class="wz-warning">
+                        @TempData["Error"]
+                        <div style="margin-top:4px; font-weight:500;">
+                            Finish all steps to unlock <b>Review &amp; Save</b>.
+                        </div>
+                    </div>
+                }
+
+                <div class="wz-form-row">
+                    <label class="wz-label">Options</label>
+
+                    @if (Model.Options == null || !Model.Options.Any())
+                    {
+                        <div class="wz-error">
+                            No compatible options for this step. Go back and change previous selections.
+                        </div>
+                    }
+                    else
+                    {
+                        @* RADIO OPTIONS (supports description) *@
+                        @foreach (var opt in Model.Options)
+                        {
+                            var isChecked = Model.SelectedComponentId.HasValue
+                            && Model.SelectedComponentId.Value == opt.Id;
+
+                            <div class="wz-option">
+                                <input class="wz-radio"
+                                       type="radio"
+                                       name="SelectedComponentId"
+                                       id="opt_@opt.Id"
+                                       value="@opt.Id"
+                                       @(isChecked ? "checked" : "") />
+
+                                <label for="opt_@opt.Id">
+                                    <div class="wz-option-title">
+                                        <span class="wz-option-name">@opt.Name</span>
+                                        <span class="wz-option-price">(+@opt.Price.ToString("0.00"))</span>
+                                    </div>
+
+                                    @if (!string.IsNullOrWhiteSpace(opt.Description))
+                                    {
+                                        <div class="wz-option-desc">
+                                            @opt.Description
+                                        </div>
+                                    }
+                                </label>
+                            </div>
+                        }
+
+                        <div class="wz-error">
+                            @Html.ValidationMessageFor(m => m.SelectedComponentId)
+                        </div>
+                    }
+                </div>
+
+                <div class="wz-actions">
+                    @if (Model.StepIndex > 0)
+                    {
+                        <a asp-action="Back"
+                           asp-route-stepIndex="@Model.StepIndex"
+                           class="wz-btn wz-btn-secondary">Back</a>
+                    }
+                    else
+                    {
+                        <a class="wz-btn wz-btn-secondary disabled" href="#" tabindex="-1" aria-disabled="true">Back</a>
+                    }
+
+                    <button type="submit" class="wz-btn wz-btn-primary">Next</button>
+                    <a asp-action="Summary" class="wz-btn wz-btn-secondary">Review &amp; Save</a>
+                    <a asp-action="Create" class="wz-btn wz-btn-secondary">Start Over</a>
+                </div>
+            </form>
+        </div>
+
+        <div class="wz-card">
+            <h3 class="wz-section-title">Chosen so far</h3>
+
+            @if (Model.ChosenSoFar != null && Model.ChosenSoFar.Any())
+            {
+                <ul class="wz-choices">
+                    @foreach (var x in Model.ChosenSoFar)
+                    {
+                        <li><b>@x.TypeName</b><br />@x.ComponentName</li>
+                    }
+                </ul>
+            }
+            else
+            {
+                <p class="wz-subtitle">No selections yet.</p>
+            }
+        </div>
+    </div>
+
+    <div style="margin-top:24px; text-align:center;">
+        <a asp-action="Index"
+           class="wz-btn wz-btn-secondary"
+           style="min-width:220px;">
+            Go back
+        </a>
+    </div>
+</div>

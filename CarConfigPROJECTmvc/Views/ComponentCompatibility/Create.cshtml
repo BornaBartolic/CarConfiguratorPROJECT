@@ -1,0 +1,63 @@
+﻿@model CarConfigPROJECTmvc.ViewModels.ComponentCompatibilityVM
+
+@{
+    ViewData["Title"] = "Create Component Compatibility";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+    <link rel="stylesheet" href="~/css/components/components.css" />
+}
+
+<div class="page components-page">
+
+    <div class="topbar">
+        <h1 class="page-title">Create Compatibility</h1>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+    </div>
+
+    <div class="card-surface" style="padding:20px;">
+        <form asp-action="Create" method="post" class="components-form">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label for="CarComponentId1" class="control-label"><b>Car Type</b></label>
+                <select asp-for="CarComponentId1"
+                        asp-items="Model.CarTypes"
+                        class="form-control">
+                    <option value="">-- Select Car Type --</option>
+                </select>
+                <span asp-validation-for="CarComponentId1" class="text-danger"></span>
+            </div>
+
+            <div class="form-group" style="margin-top:10px;">
+                <label for="CarComponentId2" class="control-label"><b>Compatible Component</b></label>
+                <select asp-for="CarComponentId2"
+                        asp-items="Model.Components"
+                        class="form-control">
+                    <option value="">-- Select Component --</option>
+                </select>
+                <span asp-validation-for="CarComponentId2" class="text-danger"></span>
+            </div>
+
+            <div style="margin-top:14px; display:flex; gap:10px; flex-wrap:wrap;">
+                <button type="submit" class="btn btn-primary">Create</button>
+                <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+            </div>
+        </form>
+
+        @if (!ViewData.ModelState.IsValid)
+        {
+            <div class="alert alert-danger" style="margin-top:14px; border-radius: 12px;">
+                @Html.ValidationSummary(excludePropertyErrors: true)
+            </div>
+        }
+    </div>
+
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -1,0 +1,55 @@
+﻿@model CarConfigPROJECTmvc.ViewModels.ComponentTypeDeleteVm
+
+@{
+    ViewData["Title"] = "Delete Component Type";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+    <link rel="stylesheet" href="~/css/components/components.css" />
+}
+
+<div class="page components-page">
+
+    <div class="topbar">
+        <h1 class="page-title">Delete Component Type</h1>
+        <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+    </div>
+
+    <div class="card-surface" style="padding:20px;">
+        <p style="margin:0 0 12px 0; color: var(--muted); font-weight:700;">
+            Are you sure you want to delete component type:
+            <strong style="color: var(--text-strong);">@Model.Name</strong> ?
+        </p>
+
+        @if (Model.ComponentNames.Any())
+        {
+            <div style="margin-top:16px; padding:16px; border-radius:14px; background:#fff; border:1px solid var(--border); box-shadow: var(--shadow-sm);">
+                <b>This type is used by the following components:</b>
+
+                <ul style="margin-top:8px; color: var(--muted);">
+                    @foreach (var c in Model.ComponentNames)
+                    {
+                        <li>@c</li>
+                    }
+                </ul>
+
+                <p style="margin-top:8px; color:#92400e; font-weight:700;">
+                    Deleting this type will also delete these components (and their usage in configurations).
+                </p>
+            </div>
+        }
+        else
+        {
+            <p style="margin:0; color: var(--muted); font-weight:700;">This type has no components.</p>
+        }
+
+        <form asp-action="Delete" method="post" style="margin-top:16px; display:flex; gap:10px; flex-wrap:wrap;">
+            @Html.AntiForgeryToken()
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-outline-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-outline-primary">Cancel</a>
+        </form>
+    </div>
+
+</div>

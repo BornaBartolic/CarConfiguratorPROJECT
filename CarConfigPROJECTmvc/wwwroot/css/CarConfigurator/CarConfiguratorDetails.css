@@ -1,0 +1,136 @@
+﻿/* ===== PAGE BACKGROUND ===== */
+.cd-shell {
+    background: linear-gradient(180deg, #eef4ff 0%, #f4f6f8 40%);
+    padding: 28px 0 44px;
+}
+
+/* ===== PAGE WIDTH ===== */
+.cd-page {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 0 18px;
+}
+
+/* ===== CARD ===== */
+.cd-card {
+    background: #ffffff;
+    border-radius: 18px;
+    border: 1px solid #eef0f3;
+    box-shadow: 0 18px 45px rgba(0,0,0,0.10);
+    overflow: hidden;
+}
+
+/* ===== HEADER ===== */
+.cd-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 20px;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    color: #ffffff;
+}
+
+.cd-title {
+    margin: 0;
+    font-size: 1.6rem;
+    font-weight: 900;
+    letter-spacing: -0.02em;
+}
+
+.cd-meta {
+    margin-top: 6px;
+    font-weight: 600;
+    opacity: 0.95;
+}
+
+/* ===== CONTENT ===== */
+.cd-content {
+    padding: 18px 20px 20px;
+}
+
+/* ===== TABLE ===== */
+.cd-table {
+    width: 100%;
+    border-collapse: collapse;
+    border: 1px solid #eef0f3;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+    .cd-table th,
+    .cd-table td {
+        padding: 12px 12px;
+        border-bottom: 1px solid #eef0f3;
+        text-align: left;
+    }
+
+    .cd-table th {
+        background: #fafbfc;
+        font-weight: 900;
+        color: #374151;
+    }
+
+        .cd-table td:last-child,
+        .cd-table th:last-child {
+            text-align: right;
+        }
+
+/* ===== TOTAL ===== */
+.cd-total {
+    margin-top: 14px;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    padding: 12px 14px;
+    border-radius: 14px;
+    background: #f7faff;
+    border: 1px solid rgba(37,99,235,0.18);
+}
+
+    .cd-total strong {
+        font-size: 1.25rem;
+        font-weight: 900;
+        color: #111827;
+    }
+
+/* ===== ACTIONS ===== */
+.cd-actions {
+    margin-top: 16px;
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+}
+
+.cd-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 14px;
+    border-radius: 12px;
+    border: 1px solid transparent;
+    text-decoration: none;
+    font-weight: 900;
+    cursor: pointer;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+    .cd-btn:active {
+        transform: translateY(1px);
+    }
+
+.cd-btn-secondary {
+    background: #ffffff;
+    color: #2563eb;
+    border-color: #dfe3ea;
+}
+
+    .cd-btn-secondary:hover {
+        box-shadow: 0 12px 26px rgba(0,0,0,0.12);
+    }
+
+/* ===== EMPTY ===== */
+.cd-empty {
+    color: #6b7280;
+    font-weight: 600;
+}

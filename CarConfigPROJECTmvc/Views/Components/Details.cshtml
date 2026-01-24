@@ -1,0 +1,38 @@
+﻿@model CarConfigPROJECTmvc.ViewModels.ComponentVM
+
+@{
+    ViewData["Title"] = "Component Details";
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/_theme.css" />
+    <link rel="stylesheet" href="~/css/components/components.css" />
+}
+
+<div class="page components-page">
+
+    <div class="topbar">
+        <h1 class="page-title">Component Details</h1>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-outline-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-outline-primary">Back to List</a>
+        </div>
+    </div>
+
+    <div class="card-surface" style="padding:20px;">
+        <dl class="row" style="margin:0;">
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Price)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.Price)</dd>
+
+            <dt class="col-sm-3">@Html.DisplayNameFor(model => model.ComponentTypeName)</dt>
+            <dd class="col-sm-9">@Html.DisplayFor(model => model.ComponentTypeName)</dd>
+        </dl>
+    </div>
+
+</div>

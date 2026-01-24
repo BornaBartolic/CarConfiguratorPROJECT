@@ -1,0 +1,70 @@
+﻿@model IEnumerable<dynamic>
+@{
+    ViewData["Title"] = "Summary";
+    var total = (decimal)(ViewBag.Total ?? 0m);
+    var list = Model?.ToList() ?? new List<dynamic>();
+}
+
+@section Styles {
+    <link rel="stylesheet" href="~/css/config-wizard.css" />
+}
+
+<div class="wz-page">
+    <div class="wz-header">
+        <div>
+            <h2 class="wz-title">Summary</h2>
+            <p class="wz-subtitle">Review your configuration and save it.</p>
+        </div>
+        <a asp-action="Create" class="wz-btn wz-btn-secondary">Start Over</a>
+    </div>
+
+
+
+    <div class="wz-card">
+        @if (!list.Any())
+        {
+            <p class="wz-subtitle">No selected components.</p>
+        }
+        else
+        {
+            <table class="wz-table">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Component</th>
+                        <th>Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var x in list)
+                    {
+                        <tr>
+                            <td>@x.TypeName</td>
+                            <td>@x.Name</td>
+                            <td>@x.Price</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+
+            <div class="wz-total">
+                <span>Total</span>
+                <strong>@total €</strong>
+            </div>
+
+            <form asp-action="Save" method="post" style="margin-top:14px;">
+                @Html.AntiForgeryToken()
+
+                <div class="wz-form-row">
+                    <label class="wz-label">Configuration name</label>
+                    <input class="wz-input" name="name" placeholder="My configuration" />
+                </div>
+
+                <div class="wz-actions">
+                    <button type="submit" class="wz-btn wz-btn-primary">Save Configuration</button>
+                    <a asp-action="Index" class="wz-btn wz-btn-secondary">Back to list</a>
+                </div>
+            </form>
+        }
+    </div>
+</div>
