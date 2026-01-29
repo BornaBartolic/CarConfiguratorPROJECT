@@ -1,6 +1,6 @@
 ﻿using CarConfigDATA.Models;
 
-namespace CarConfigPROJECTmvc.ViewModels
+namespace CarConfigPROJECTmvc.ViewModels.CarConfiguration
 {
     public class CarConfigurationDetailsVm
     {

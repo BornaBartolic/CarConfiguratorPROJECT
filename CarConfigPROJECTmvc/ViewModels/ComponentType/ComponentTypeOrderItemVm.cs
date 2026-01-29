@@ -1,4 +1,4 @@
-﻿namespace CarConfigPROJECTmvc.ViewModels
+﻿namespace CarConfigPROJECTmvc.ViewModels.ComponentType
 {
     public class ComponentTypeOrderItemVm
     {

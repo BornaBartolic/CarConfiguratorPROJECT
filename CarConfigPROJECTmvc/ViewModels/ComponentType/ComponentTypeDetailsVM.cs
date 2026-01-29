@@ -1,4 +1,6 @@
-﻿namespace CarConfigPROJECTmvc.ViewModels
+﻿using CarConfigPROJECTmvc.ViewModels.Component;
+
+namespace CarConfigPROJECTmvc.ViewModels.ComponentType
 {
     public class ComponentTypeDetailsVm
     {

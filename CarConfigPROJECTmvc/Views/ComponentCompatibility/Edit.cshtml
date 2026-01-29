@@ -1,4 +1,5 @@
 ﻿@using CarConfigPROJECTmvc.ViewModels
+@using CarConfigPROJECTmvc.ViewModels.ComponentCompatibility
 @model ComponentCompatibilityVM
 
 @{
@@ -19,20 +20,25 @@
 
     <div class="card-surface" style="padding:20px;">
         <form asp-action="Edit" method="post" class="components-form">
+            @Html.AntiForgeryToken()
             <input type="hidden" asp-for="Id" />
+
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
             <div class="form-group">
                 <label asp-for="CarComponentId1" class="control-label"></label>
-                <select asp-for="CarComponentId1" class="form-control" asp-items="Model.Components">
-                    <option value="">-- Select Component 1 --</option>
+                <!-- FIRST dropdown: ONLY Car Types -->
+                <select asp-for="CarComponentId1" class="form-control" asp-items="Model.CarTypes">
+                    <option value="">-- Select Car Type --</option>
                 </select>
                 <span asp-validation-for="CarComponentId1" class="text-danger"></span>
             </div>
 
             <div class="form-group" style="margin-top:10px;">
                 <label asp-for="CarComponentId2" class="control-label"></label>
+                <!-- SECOND dropdown: All NON-CarType components -->
                 <select asp-for="CarComponentId2" class="form-control" asp-items="Model.Components">
-                    <option value="">-- Select Component 2 --</option>
+                    <option value="">-- Select Component --</option>
                 </select>
                 <span asp-validation-for="CarComponentId2" class="text-danger"></span>
             </div>

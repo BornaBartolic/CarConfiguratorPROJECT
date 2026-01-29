@@ -1,5 +1,5 @@
 ﻿using CarConfigDATA.Models;
-using CarConfigPROJECTmvc.ViewModels;
+using CarConfigPROJECTmvc.ViewModels.ComponentCompatibility;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -81,7 +81,7 @@ public class ComponentCompatibilityController : Controller
             .Where(c => componentIds.Contains(c.Id))
             .ToDictionaryAsync(c => c.Id, c => c.Name);
 
-        var model = compatPage.Select(x => new CarConfigPROJECTmvc.ViewModels.ComponentCompatibilityRowVm
+        var model = compatPage.Select(x => new CarConfigPROJECTmvc.ViewModels.ComponentCompatibility.ComponentCompatibilityRowVm
         {
             Id = x.Id,
             Component1Name = componentNames.TryGetValue(x.CarComponentId1, out var n1) ? n1 : $"#{x.CarComponentId1}",
@@ -236,20 +236,69 @@ public class ComponentCompatibilityController : Controller
     // ========================= EDIT GET =========================
     public async Task<IActionResult> Edit(int id)
     {
-        var comp = await _context.CarComponentCompatibilities.FindAsync(id);
-        if (comp == null) return NotFound();
+        var entity = await _context.CarComponentCompatibilities
+            .AsNoTracking()
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        if (entity == null)
+            return NotFound();
+
+        var normalized = await NormalizeCarTypePairAsync(
+            entity.CarComponentId1,
+            entity.CarComponentId2
+        );
+
+        if (normalized == null)
+            return BadRequest();
+
+        var (carTypeId, otherId) = normalized.Value;
 
         var vm = new ComponentCompatibilityVM
         {
-            Id = comp.Id,
-            CarComponentId1 = comp.CarComponentId1,
-            CarComponentId2 = comp.CarComponentId2,
-            Components = _context.CarComponents
+            Id = entity.Id,
+            CarComponentId1 = carTypeId, // ALWAYS Car Type
+            CarComponentId2 = otherId    // ALWAYS other component
+        };
+
+        var carTypeTypeId = await GetCarTypeComponentTypeIdAsync();
+
+        if (carTypeTypeId != null)
+        {
+            vm.CarTypes = await _context.CarComponents
+                .AsNoTracking()
+                .Where(c => c.ComponentTypeId == carTypeTypeId.Value)
+                .OrderBy(c => c.Name)
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+                .ToListAsync();
+
+            vm.Components = await _context.CarComponents
+                .AsNoTracking()
+                .Where(c => c.ComponentTypeId != carTypeTypeId.Value)
+                .OrderBy(c => c.Name)
+                .Select(c => new SelectListItem
+                {   
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+                .ToListAsync();
+        }
+        else
+        {
+            vm.CarTypes = new List<SelectListItem>();
+            vm.Components = await _context.CarComponents
                 .AsNoTracking()
                 .OrderBy(c => c.Name)
-                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
-                .ToList()
-        };
+                .Select(c => new SelectListItem
+                {
+                    Value = c.Id.ToString(),
+                    Text = c.Name
+                })
+                .ToListAsync();
+        }
 
         return View(vm);
     }
@@ -262,45 +311,81 @@ public class ComponentCompatibilityController : Controller
         if (vm.CarComponentId1 == vm.CarComponentId2)
             ModelState.AddModelError("", "A component cannot be compatible with itself.");
 
-        var normalized = await NormalizeCarTypePairAsync(vm.CarComponentId1, vm.CarComponentId2);
+        var normalized = await NormalizeCarTypePairAsync(
+            vm.CarComponentId1,
+            vm.CarComponentId2
+        );
+
         if (normalized == null)
         {
-            ModelState.AddModelError("", "You must select exactly one Car Type component and one non-Car-Type component.");
-        }
-        else
-        {
-            var (carTypeId, otherId) = normalized.Value;
-
-            bool exists = await _context.CarComponentCompatibilities
-                .AsNoTracking()
-                .AnyAsync(c => c.CarComponentId1 == carTypeId && c.CarComponentId2 == otherId && c.Id != vm.Id);
-
-            if (exists)
-                ModelState.AddModelError("", "This compatibility link already exists.");
+            ModelState.AddModelError(
+                "",
+                "You must select exactly one Car Type component and one non-Car-Type component."
+            );
         }
 
         if (!ModelState.IsValid)
         {
-            vm.Components = _context.CarComponents
-                .AsNoTracking()
-                .OrderBy(c => c.Name)
-                .Select(c => new SelectListItem { Value = c.Id.ToString(), Text = c.Name })
-                .ToList();
+            // REPOLULATE DROPDOWNS (SAME AS CREATE)
+            var carTypeTypeId = await GetCarTypeComponentTypeIdAsync();
+
+            if (carTypeTypeId != null)
+            {
+                vm.CarTypes = await _context.CarComponents
+                    .AsNoTracking()
+                    .Where(c => c.ComponentTypeId == carTypeTypeId.Value)
+                    .OrderBy(c => c.Name)
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    })
+                    .ToListAsync();
+
+                vm.Components = await _context.CarComponents
+                    .AsNoTracking()
+                    .Where(c => c.ComponentTypeId != carTypeTypeId.Value)
+                    .OrderBy(c => c.Name)
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    })
+                    .ToListAsync();
+            }
+            else
+            {
+                vm.CarTypes = new List<SelectListItem>();
+                vm.Components = await _context.CarComponents
+                    .AsNoTracking()
+                    .OrderBy(c => c.Name)
+                    .Select(c => new SelectListItem
+                    {
+                        Value = c.Id.ToString(),
+                        Text = c.Name
+                    })
+                    .ToListAsync();
+            }
 
             return View(vm);
         }
 
-        var comp = await _context.CarComponentCompatibilities.FindAsync(vm.Id);
-        if (comp == null) return NotFound();
-
         var (ctId, oId) = normalized!.Value;
 
-        comp.CarComponentId1 = ctId; // ALWAYS Car Type
-        comp.CarComponentId2 = oId;  // ALWAYS other
+        var entity = await _context.CarComponentCompatibilities
+            .FirstOrDefaultAsync(x => x.Id == vm.Id);
+
+        if (entity == null)
+            return NotFound();
+
+        entity.CarComponentId1 = ctId;
+        entity.CarComponentId2 = oId;
 
         await _context.SaveChangesAsync();
+
         return RedirectToAction(nameof(Index));
     }
+
 
     // ========================= DELETE =========================
     public async Task<IActionResult> Delete(int id)

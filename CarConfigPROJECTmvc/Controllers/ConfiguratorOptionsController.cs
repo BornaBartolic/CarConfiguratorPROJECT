@@ -1,6 +1,7 @@
 ﻿using CarConfigDATA.Models;
 using CarConfigDATA.Services;
 using CarConfigPROJECTmvc.ViewModels;
+using CarConfigPROJECTmvc.ViewModels.ComponentType;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;

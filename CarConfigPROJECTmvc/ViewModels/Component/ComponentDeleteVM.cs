@@ -1,6 +1,6 @@
 ﻿using CarConfigDATA.Models;
 
-namespace CarConfigPROJECTmvc.ViewModels
+namespace CarConfigPROJECTmvc.ViewModels.Component
 {
     public class ComponentDeleteVM
     {

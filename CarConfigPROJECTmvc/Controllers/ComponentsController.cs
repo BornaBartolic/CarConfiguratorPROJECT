@@ -1,5 +1,5 @@
 ﻿using CarConfigDATA.Models;
-using CarConfigPROJECTmvc.ViewModels;
+using CarConfigPROJECTmvc.ViewModels.Component;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;

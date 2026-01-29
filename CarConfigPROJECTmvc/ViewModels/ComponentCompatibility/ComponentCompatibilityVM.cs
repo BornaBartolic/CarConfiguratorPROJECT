@@ -2,17 +2,17 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace CarConfigPROJECTmvc.ViewModels
+namespace CarConfigPROJECTmvc.ViewModels.ComponentCompatibility
 {
     public class ComponentCompatibilityVM
     {
         public int Id { get; set; } // za Edit
 
-        [Required(ErrorMessage = "Odaberi prvu komponentu")]
+        [Required(ErrorMessage = "Choose car type!")]
         [Display(Name = "Component 1")]
         public int CarComponentId1 { get; set; }
 
-        [Required(ErrorMessage = "Odaberi drugu komponentu")]
+        [Required(ErrorMessage = "Choose component!")]
         [Display(Name = "Component 2")]
         public int CarComponentId2 { get; set; }
 

@@ -2,7 +2,7 @@
 using CarConfigDATA.Models;
 using CarConfigDATA.Services;
 using CarConfigPROJECTmvc.Infrastructure;
-using CarConfigPROJECTmvc.ViewModels;
+using CarConfigPROJECTmvc.ViewModels.CarConfiguration;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -172,7 +172,6 @@ public class CarConfiguratorController : Controller
     {
         if (vm.SelectedComponentId == null)
         {
-            ModelState.AddModelError(nameof(vm.SelectedComponentId), "You must select an option.");
             return await Step(vm.StepIndex);
         }
 
@@ -195,11 +194,11 @@ public class CarConfiguratorController : Controller
                 x.CarComponentId1 == carTypeId.Value && x.CarComponentId2 == vm.SelectedComponentId.Value
             );
 
-            if (!ok)
-            {
-                ModelState.AddModelError(nameof(vm.SelectedComponentId), "Selected option is not compatible with the chosen Car Type.");
-                return await Step(vm.StepIndex);
-            }
+            //if (!ok)
+            //{
+            //    ModelState.AddModelError(nameof(vm.SelectedComponentId), "Selected option is not compatible with the chosen Car Type.");
+            //    return await Step(vm.StepIndex);
+            //} obrisi kasnije/stari model configa al osto za svaki slucaj //OBRISI NA KRAJU
         }
 
         chosenIds.Add(vm.SelectedComponentId.Value);

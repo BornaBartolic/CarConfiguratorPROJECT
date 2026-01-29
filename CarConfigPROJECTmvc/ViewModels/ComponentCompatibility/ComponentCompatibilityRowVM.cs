@@ -1,4 +1,4 @@
-﻿namespace CarConfigPROJECTmvc.ViewModels
+﻿namespace CarConfigPROJECTmvc.ViewModels.ComponentCompatibility
 {
     public class ComponentCompatibilityRowVm
     {
